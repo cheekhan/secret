@@ -1,0 +1,14 @@
+@import "reset.css";
+
+:root {
+    /* 自定义全局变量 */
+    /* 字体颜色分级 */
+    --self-text-0: #ffffff;
+    --self-text-1: #e4e4e7;
+    --self-text-2: rgb(186 186 193);
+    --self-text-3: #555555;
+    /* 块颜色分级 */
+    --self-bg-color-0: #212327;
+    --self-bg-color-1: #292a2d;
+    --self-bg-color-2: #404045;
+}
