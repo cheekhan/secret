@@ -1,6 +1,8 @@
-import { useArcPath, earthBranches, getStemFromBranch } from "./utils";
-import type { Selection } from "d3"
+import {useArcPath, earthBranches, getStemFromBranch, useSvg} from "./utils";
+import type {Selection} from "d3"
 
+
+export {useSvg}
 // 尺寸信息
 const SizeInfo = {
     width: 450,
@@ -10,6 +12,7 @@ const SizeInfo = {
     // 地盘:100
     // 天盘:70
 }
+
 // 使用的颜色
 enum Color {
     BranchBg = '#ff8c00', // 地盘背景色
@@ -22,6 +25,7 @@ enum Color {
     GodBg = '#2C363F', // 12神将颜色信息
     GodColor = '#ffffff'
 }
+
 /** 创建地盘 */
 export function use12Branches(
     container: Selection<SVGSVGElement, any, any, any>
@@ -62,6 +66,7 @@ export function use12Branches(
                 return 200
             }
         });
+    // g.rotate = _12Rotate(g, rotateAngle)
     return g
 }
 
@@ -71,9 +76,10 @@ export function use12Stems(container: Selection<SVGSVGElement, any, any, any>, b
     const pathAngle = useArcPath(SizeInfo.stemsSize[0], SizeInfo.stemsSize[1], 12); // 路径和角度
 
     // 创建一个g元素，用于包裹所有地支
-    const g = container.append('g');
+    const box = container.append('g');
     // 设置g元素的transform属性，使其中心在SVG画布的中心
-    g.attr('transform', "translate(225,225)");
+    box.attr('transform', "translate(225,225)");
+    const g = box.append('g');
     // 绑定地支数据
     const branchesGroup = g.selectAll('g')
         .data(earthBranches) // 将地支数据绑定到g元素上
@@ -89,6 +95,7 @@ export function use12Stems(container: Selection<SVGSVGElement, any, any, any>, b
     // 添加地支文本标签
     branchesGroup.append('text').text(d => d).style('font-weight', 600) // 显示地支名称
         .attr('y', SizeInfo.stemsSize[1] + 27).attr('fill', Color.StemColor).attr('text-anchor', 'middle'); // 设置文本位置和颜色
+    g.rotate = _12Rotate(g, rotateAngle)
     return g
 }
 
@@ -126,8 +133,10 @@ export function use12Godes(container: Selection<SVGSVGElement, any, any, any>) {
     // 添加神将文本标签
     godesGroup.append('text').text(d => d).style('font-weight', 600) // 显示神将名称
         .attr('y', SizeInfo.stemsSize[0] + 27).attr('fill', Color.GodColor).attr('text-anchor', 'middle'); // 设置文本位置和颜色
+    g.rotate = _12Rotate(g, rotateAngle)
     return g
 }
+
 /** 将输入的时间信息,转为标准的四柱信息 */
 export function useDate(container: Selection<SVGSVGElement, any, any, any>) {
     const g = container.append('g');
@@ -143,4 +152,13 @@ export function useDate(container: Selection<SVGSVGElement, any, any, any>) {
 
 export {
     SizeInfo
+}
+
+function _12Rotate(g: Selection<SVGGElement, any, any, any>, rotateAngle: number) {
+    /**
+     * 顺时针旋转角度的个数
+     */
+    return function (index) {
+        g.attr('transform', `rotate(${index * rotateAngle})`);
+    }
 }

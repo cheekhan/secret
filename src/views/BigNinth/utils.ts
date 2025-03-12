@@ -98,7 +98,9 @@ enum Yinyang {
 export {
     earthBranches,
     celestialStems,
-    Yinyang
+    Yinyang,
+    earthBranchesType,
+    celestialStemsType
 }
 
 /** 从天干,获取寄宫所在的地支 */

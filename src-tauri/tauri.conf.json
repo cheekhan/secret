@@ -12,13 +12,22 @@
   "app": {
     "windows": [
       {
-        "title": "curved-array",
+        "title": "cheekhan工具包",
+        "closable": false,
+        "minimizable": false,
+        "resizable": false,
         "width": 1280,
         "height": 720
       }
     ],
     "security": {
       "csp": null
+    },
+    "trayIcon": {
+      "iconPath": "icons/128x128.png",
+      "menuOnLeftClick": false,
+      "title": "MacOs",
+      "tooltip": "真灵"
     }
   },
   "bundle": {
