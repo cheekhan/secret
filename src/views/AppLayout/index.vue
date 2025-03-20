@@ -1,18 +1,52 @@
 <script setup lang="ts">
-import {} from "vue"
-import {RouterView} from "vue-router";
+import { ref } from "vue";
+import { RouterView ,useRouter} from "vue-router";
+const router = useRouter()
+const aside = ref([
+  {
+    title: "自由和自律",
+    items: [
+      {
+        title: "不良癖好",
+        path: "/no-smoking",
+      },
+    ],
+  },
+  {
+    title: "天灵地也灵",
+    items: [
+      {
+        title: "转动时间",
+        path: "/big-ninth",
+      },
+    ],
+  },
+  {
+    title: "小小工具集",
+    items: [
+      {
+        title: "😍😍下载",
+        path: "/no-smoking",
+      },
+    ],
+  },
+]);
+
+function handleRouter(path:string){
+  router.push(path)
+}
 </script>
 <template>
   <el-container class="app-container">
     <el-aside width="250px">
-      <p class="page-group">掐指一算</p>
-      <p class="page">排盘排盘</p>
-      <p class="page-group">biubiubiu</p>
-      <p class="page">下载</p>
+      <template v-for="group in aside">
+        <p class="page-group">{{ group.title }}</p>
+        <p class="page" v-for="item in group.items" @click="handleRouter(item.path)">{{ item.title }}</p>
+      </template>
     </el-aside>
     <el-main>
       <el-scrollbar>
-        <RouterView/>
+        <RouterView />
       </el-scrollbar>
     </el-main>
   </el-container>
@@ -39,13 +73,12 @@ import {RouterView} from "vue-router";
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 4px;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
 .page:hover {
   background-color: var(--self-bg-color-2);
 }
-
 
 :deep(.el-main) {
   --el-main-padding: 10px;

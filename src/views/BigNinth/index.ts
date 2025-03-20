@@ -1,164 +1,181 @@
-import {useArcPath, earthBranches, getStemFromBranch, useSvg} from "./utils";
-import type {Selection} from "d3"
+import { select, arc } from "d3";
+// 五行，五行关系，和判断五行关系的函数
+enum wuxing {
+  "金" = "金",
+  "水" = "水",
+  "木" = "木",
+  "火" = "火",
+  "土" = "土",
+}
+type wxRelation = "生" | "被生" | "被克" | "克" | "相同";
+function getWxRelatin(f: wuxing, s: wuxing): wxRelation {
+  const relationMap: Record<wuxing, Record<wuxing, wxRelation>> = {
+    金: {
+      水: "生",
+      木: "克",
+      火: "被克",
+      土: "被生",
+      金: "相同",
+    },
+    土: {
+      金: "生",
+      火: "被生",
+      木: "被克",
+      水: "克",
+      土: "相同",
+    },
+    木: {
+      火: "生",
+      土: "克",
+      金: "被克",
+      水: "被生",
+      木: "相同",
+    },
+    水: {
+      金: "被生",
+      木: "生",
+      火: "克",
+      土: "被克",
+      水: "相同",
+    },
+    火: {
+      土: "生",
+      木: "被生",
+      金: "克",
+      水: "被克",
+      火: "相同",
+    },
+  };
+  return relationMap[f][s];
+}
 
+enum stems {
+  "甲" = 0,
+  "乙",
+  "丙",
+  "丁",
+  "戊",
+  "己",
+  "庚",
+  "辛",
+  "壬",
+  "癸",
+}
+enum branches {
+  "子" = 0,
+  "丑",
+  "寅",
+  "卯",
+  "辰",
+  "巳",
+  "午",
+  "未",
+  "申",
+  "酉",
+  "戌",
+  "亥",
+}
+/**
+ * 获取地支的五行属性
+ * @param branch
+ * @returns
+ */
+function getBranchesWx(branch: branches): wuxing {
+  switch (branch) {
+    case branches.子:
+      return wuxing.水;
+    case branches.丑:
+      return wuxing.土;
+    case branches.寅:
+      return wuxing.木;
+    case branches.卯:
+      return wuxing.木;
+    case branches.辰:
+      return wuxing.土;
+    case branches.巳:
+      return wuxing.火;
+    case branches.午:
+      return wuxing.火;
+    case branches.未:
+      return wuxing.土;
+    case branches.申:
+      return wuxing.金;
+    case branches.酉:
+      return wuxing.金;
+    case branches.戌:
+      return wuxing.土;
+    case branches.亥:
+      return wuxing.水;
+    default:
+      throw new Error();
+  }
+}
 
-export {useSvg}
-// 尺寸信息
-const SizeInfo = {
-    width: 450,
-    height: 450,
-    branchesSize: [225, 165],
-    stemsSize: [125, 80]
-    // 地盘:100
-    // 天盘:70
+enum godes {
+  "贵人",
+  "螣蛇",
+  "朱雀",
+  "六合",
+  "勾陈",
+  "青龙",
+  "天空",
+  "白虎",
+  "太常",
+  "玄武",
+  "太阴",
+  "天后",
+}
+
+export { wuxing, getWxRelatin, stems, branches, getBranchesWx, godes };
+export type { wxRelation };
+
+/** 创建svg容器 */
+export function useSvg(el: HTMLElement, w: number, h: number) {
+  const svg = select(el).append("svg").attr("width", w).attr("height", h);
+  return svg;
+}
+/**
+ * 创建一个 12 分之 1 的弧形
+ * @param inner 弧形内径
+ * @param outer 弧形外径
+ */
+export function use12Pie(inner: number, outer: number) {
+  const len = 12; // 12分之一
+  const arcGener = arc();
+  const angleStep = (2 * Math.PI) / len; // 角度
+  const angleStart = Math.PI - angleStep / 2; // 开始角度
+  const pathD = arcGener({
+    innerRadius: inner,
+    outerRadius: outer,
+    startAngle: angleStart,
+    endAngle: angleStart + angleStep,
+  });
+  return {
+    path: pathD,
+    angle: angleStep,
+  };
 }
 
 // 使用的颜色
 enum Color {
-    BranchBg = '#ff8c00', // 地盘背景色
-    BranchColor = '#000',// 地盘文字颜色
-    BranchStem = "#000",// 地盘寄宫颜色
-    StemBg = '#0f4b05', // 天盘背景色
-    StemColor = '#ffffff', // 天盘文字颜色
-    Border = "#4a3d4d", // 边框
-    BorderLight = '#c6d6e6',// 亮色的边框
-    GodBg = '#2C363F', // 12神将颜色信息
-    GodColor = '#ffffff'
+  金 = "#909399", // 五行颜色
+  水 = "#409EFF", // 深蓝
+  木 = "#67C23A", // 绿色
+  火 = "#F56C6C", // 红色
+  土 = "#E6A23C", // 黄色
+  darkFont = "#000000", // 暗色文字
+  linghtFont = "#ffffff",
+  GodBg = "#003152", // 神将背景色
+  CenterBg = "#002FA7", // 圆心的背景色
+  linghtBorder = "#414243", // 灰色边框
 }
 
-/** 创建地盘 */
-export function use12Branches(
-    container: Selection<SVGSVGElement, any, any, any>
-): Selection<SVGGElement, any, any, any> {
-    // 计算每个地支的角度
-    const pathAngle = useArcPath(SizeInfo.branchesSize[0], SizeInfo.branchesSize[1], 12); // 路径和角度
+const size = {
+  width: 500,
+  height: 500,
+  stemsSize: [180, 130],
+  godesSize: [130, 80],
+  wuxingSize: 80,
+};
 
-    // 创建一个g元素，用于包裹所有地支
-    const g = container.append('g');
-    // 设置g元素的transform属性，使其中心在SVG画布的中心
-    g.attr('transform', "translate(225,225)");
-    // 绑定地支数据
-    const branchesGroup = g.selectAll('g')
-        .data(earthBranches) // 将地支数据绑定到g元素上
-        .join('g'); // 如果数据存在则更新，否则创建新元素
-
-    // 为每个地支设置旋转角度
-    branchesGroup
-        .attr('transform', (_, i) => `rotate(${i * pathAngle.angle * (180 / Math.PI)})`)
-        .append('path').attr('d', pathAngle.path) // 绘制路径
-        .attr('fill', Color.BranchBg)
-        .attr('stroke', Color.Border)
-        .attr('stroke-width', 1);
-    // 添加地支文本标签
-    branchesGroup.append('text').text(d => d) // 显示地支名称
-        .attr('fill', Color.BranchColor) // 设置颜色
-        .style('font-size', 18).style('font-weight', 600)
-        .attr('transform', `rotate(${(pathAngle.angle * (180 / Math.PI) / 2) - 8})`).attr('y', 200); // 文本旋转,靠左
-    // 绑定寄宫
-    branchesGroup.append('g')
-        .attr('transform', `rotate(${(pathAngle.angle * (180 / Math.PI) / 2) - 18})`)
-        .selectAll('text').data(d => getStemFromBranch(d)).join('text')
-        .attr('fill', Color.BranchStem).text(d => d).style('font-size', 14)
-        .attr('y', (_, i, arr) => { // 计算寄宫天干的排列位置
-            if (arr.length > 1) {
-                return 190 + i * 20
-            } else {
-                return 200
-            }
-        });
-    // g.rotate = _12Rotate(g, rotateAngle)
-    return g
-}
-
-/** 创建天盘,需要使用月将和占时进行对齐 */
-export function use12Stems(container: Selection<SVGSVGElement, any, any, any>, branchIndex: number) {
-    // 计算每个地支的角度
-    const pathAngle = useArcPath(SizeInfo.stemsSize[0], SizeInfo.stemsSize[1], 12); // 路径和角度
-
-    // 创建一个g元素，用于包裹所有地支
-    const box = container.append('g');
-    // 设置g元素的transform属性，使其中心在SVG画布的中心
-    box.attr('transform', "translate(225,225)");
-    const g = box.append('g');
-    // 绑定地支数据
-    const branchesGroup = g.selectAll('g')
-        .data(earthBranches) // 将地支数据绑定到g元素上
-        .join('g'); // 如果数据存在则更新，否则创建新元素
-
-    // 为每个地支设置旋转角度
-    const rotateAngle = pathAngle.angle * (180 / Math.PI); // 角度转为旋转角度
-    branchesGroup
-        .attr('transform', (_, i) => `rotate(${(i + branchIndex) * rotateAngle})`)
-        .append('path').attr('d', pathAngle.path).attr('fill', Color.StemBg) // 绘制路径
-        .attr('stroke', Color.BorderLight)
-        .attr('stroke-width', 1);
-    // 添加地支文本标签
-    branchesGroup.append('text').text(d => d).style('font-weight', 600) // 显示地支名称
-        .attr('y', SizeInfo.stemsSize[1] + 27).attr('fill', Color.StemColor).attr('text-anchor', 'middle'); // 设置文本位置和颜色
-    g.rotate = _12Rotate(g, rotateAngle)
-    return g
-}
-
-/** 12神将信息 */
-export function use12Godes(container: Selection<SVGSVGElement, any, any, any>) {
-    const godes = [
-        "贵人",
-        "螣蛇",
-        "朱雀",
-        "六合",
-        "勾陈",
-        "青龙",
-        "天空",
-        "白虎",
-        "太常",
-        "玄武",
-        "太阴",
-        "天后",
-    ]
-    const pathAngle = useArcPath(SizeInfo.branchesSize[1], SizeInfo.stemsSize[0], 12); // 路径和角度
-    // 创建一个g元素，用于包裹所有贵人
-    const g = container.append('g');
-    // 设置g元素的transform属性，使其中心在SVG画布的中心
-    g.attr('transform', "translate(225,225)");
-    const godesGroup = g.selectAll('g')
-        .data(godes)
-        .join('g');
-
-    const rotateAngle = pathAngle.angle * (180 / Math.PI); // 角度转为旋转角度
-    godesGroup
-        .attr('transform', (_, i) => `rotate(${i * rotateAngle})`)
-        .append('path').attr('d', pathAngle.path).attr('fill', Color.GodBg) // 绘制路径
-        .attr('stroke', Color.BorderLight)
-        .attr('stroke-width', 1);
-    // 添加神将文本标签
-    godesGroup.append('text').text(d => d).style('font-weight', 600) // 显示神将名称
-        .attr('y', SizeInfo.stemsSize[0] + 27).attr('fill', Color.GodColor).attr('text-anchor', 'middle'); // 设置文本位置和颜色
-    g.rotate = _12Rotate(g, rotateAngle)
-    return g
-}
-
-/** 将输入的时间信息,转为标准的四柱信息 */
-export function useDate(container: Selection<SVGSVGElement, any, any, any>) {
-    const g = container.append('g');
-    g.attr('transform', "translate(225,225)");
-
-    g.append('text').text('甲子');
-    g.append('text').text('甲子');
-    g.append('text').text('甲子');
-    g.append('text').text('甲子');
-    return g
-}
-
-
-export {
-    SizeInfo
-}
-
-function _12Rotate(g: Selection<SVGGElement, any, any, any>, rotateAngle: number) {
-    /**
-     * 顺时针旋转角度的个数
-     */
-    return function (index) {
-        g.attr('transform', `rotate(${index * rotateAngle})`);
-    }
-}
+export { Color, size };
