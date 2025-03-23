@@ -11,16 +11,16 @@ export function useRect(
     .attr("height", size.height)
     .attr("rx", 8)
     .attr("ry", 8)
-    .attr("fill", "#191919")
+    .attr("fill", Color.CenterBg)
     .attr("stroke", Color.linghtBorder)
     .attr("stroke-width", 2);
   const lines = [
-    { x0: 0, y0: 166, x1: 500, y1: 166 },
-    { x0: 0, y0: 334, x1: 500, y1: 334 },
-    { x0: 166, y0: 0, x1: 166, y1: 500 },
-    { x0: 334, y0: 0, x1: 334, y1: 500 },
-    { x0: 3, y0: 3, x1: 497, y1: 497 },
-    { x0: 3, y0: 497, x1: 497, y1: 3 },
+    { x0: 0, y0: 166 + 37, x1: 500, y1: 166 + 37 }, // 行1
+    { x0: 0, y0: 334 - 37, x1: 500, y1: 334 - 37 }, // 行2
+    { x0: 166 + 37, y0: 0, x1: 166 + 37, y1: 500 }, // 列1
+    { x0: 334 - 37, y0: 0, x1: 334 - 37, y1: 500 }, // 列2
+    { x0: 3, y0: 3, x1: 497, y1: 497 }, // 对角
+    { x0: 3, y0: 497, x1: 497, y1: 3 }, // 对角
   ];
   lines.forEach((line) => {
     group
@@ -35,10 +35,136 @@ export function useRect(
   group
     .append("text")
     .text("子")
-    .attr(
-      "transform",
-      `translate(${size.width / 2 - 8},${size.height / 2 - 8})`
-    );
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${250 - 8},${250 + 180 + 40})`);
+  group
+    .append("text")
+    .text("丑")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${250 - 8 - 150 + 25},${250 + 180 + 30})`);
+  group // 癸 => 丑
+    .append("text")
+    .text("癸")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${250 - 8 - 150 + 50},${250 + 180 + 15})`);
+  group
+    .append("text")
+    .text("寅")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${30},${166 * 2 + 50})`);
+  group // 甲 => 寅
+    .append("text")
+    .text("甲")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${30 + 25},${166 * 2 + 50 - 25})`);
+  group
+    .append("text")
+    .text("卯")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${30},${167 + 90})`);
+  group
+    .append("text")
+    .text("辰")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${30},${80 + 45})`);
+  group // 乙 => 辰
+    .append("text")
+    .text("乙")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${30 + 25},${80 + 45 + 25})`);
+  group
+    .append("text")
+    .text("巳")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${100 + 25},${50 + 10})`);
+  group // 丙，戊 => 巳
+    .append("text")
+    .text("丙")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${100 + 15},${50 + 10 + 35})`);
+  group // 丙，戊 => 巳
+    .append("text")
+    .text("戊")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${100 + 60},${50 + 10 + 10})`);
+  group
+    .append("text")
+    .text("午")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${250 - 8},${50 - 10})`);
+
+  group
+    .append("text")
+    .text("未")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${166 * 2 + 50 - 25},${50 + 10})`);
+  group // 丁，己 => 巳
+    .append("text")
+    .text("丁")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${166 * 2 + 50 - 25 - 35},${50 + 10 + 10})`);
+  group // 丁，己 => 巳
+    .append("text")
+    .text("己")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${166 * 2 + 50 - 25 + 15},${50 + 10 + 30})`);
+  group
+    .append("text")
+    .text("申")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${166 * 2 + 120},${80 + 45})`);
+  group // 庚 => 申
+    .append("text")
+    .text("庚")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${166 * 2 + 120 - 25},${80 + 45 + 25})`);
+  group
+    .append("text")
+    .text("酉")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${166 * 2 + 120},${167 + 90})`);
+  group
+    .append("text")
+    .text("戌")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${166 * 2 + 120},${166 * 2 + 50})`);
+  group // 辛 =>  戌
+    .append("text")
+    .text("辛")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${166 * 2 + 120 - 25},${166 * 2 + 25})`);
+  group
+    .append("text")
+    .text("亥")
+    .attr("font-size", 18)
+    .attr("fill", Color.linghtFont)
+    .attr("transform", `translate(${166 * 2 + 50 - 25},${250 + 180 + 30})`);
+  group // 壬 => 亥
+    .append("text")
+    .text("壬")
+    .attr("font-size", 20)
+    .attr("fill", "rgb(167, 119.4, 48)")
+    .attr("transform", `translate(${166 * 2 + 50 - 50},${250 + 180 + 15})`);
 }
 /** 绘制天盘 */
 export function useStemsPie(

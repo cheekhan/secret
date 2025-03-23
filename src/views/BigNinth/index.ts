@@ -166,7 +166,7 @@ enum Color {
   darkFont = "#000000", // 暗色文字
   linghtFont = "#ffffff",
   GodBg = "#003152", // 神将背景色
-  CenterBg = "#002FA7", // 圆心的背景色
+  CenterBg = "#191919", // 圆心的背景色
   linghtBorder = "#414243", // 灰色边框
 }
 
