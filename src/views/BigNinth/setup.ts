@@ -1,5 +1,6 @@
 import { type Selection } from "d3";
 import { size, Color, use12Pie, godes, branches, getBranchesWx } from "./index";
+import { dayjs } from "element-plus";
 /** 绘制地盘 */
 export function useRect(
   container: Selection<SVGSVGElement, unknown, null, undefined>
@@ -237,4 +238,16 @@ export function useWxInfo(
     .attr("cy", 0)
     .attr("r", size.wuxingSize)
     .attr("fill", Color.CenterBg);
+}
+/** 获取时间 */
+export function useDate() {
+  const now = dayjs().format("YYYY,M,D,H,m,s").split(",");
+  return {
+    y: now[0],
+    M: now[1],
+    d: now[2],
+    h: now[3],
+    m: now[4],
+    s: now[5],
+  };
 }
