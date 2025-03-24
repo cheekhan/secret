@@ -166,6 +166,7 @@ export function useRect(
     .attr("font-size", 20)
     .attr("fill", "rgb(167, 119.4, 48)")
     .attr("transform", `translate(${166 * 2 + 50 - 50},${250 + 180 + 15})`);
+  return group;
 }
 /** 绘制天盘 */
 export function useStemsPie(
@@ -194,23 +195,32 @@ export function useStemsPie(
       .attr("fill", Color.darkFont)
       .attr("text-anchor", "middle"); // 设置文本位置和颜色
   }
+  return group;
 }
 
 /** 绘制天将 */
 export function useGodesPie(
-  container: Selection<SVGSVGElement, unknown, null, undefined>
+  container: Selection<SVGSVGElement, unknown, null, undefined>,
+  startAngle: number = 0, // 角度偏差
+  inverse: boolean = true // 是否逆序
 ) {
   const inner = size.godesSize[1];
   const outer = size.godesSize[0];
   const group = container.append("g"); // 地盘容器
-  group.attr("transform", `translate(${size.width / 2},${size.height / 2})`);
+  group.attr(
+    "transform",
+    `translate(${size.width / 2},${size.height / 2}),rotate(${startAngle})`
+  );
   const { path, angle } = use12Pie(inner, outer);
   const rotateAngle = angle * (180 / Math.PI);
   for (let i = 0; i <= 11; i++) {
     const g = group
       .append("g")
       .datum(i)
-      .attr("transform", (d) => `rotate(${d * rotateAngle})`);
+      .attr(
+        "transform",
+        (d) => `rotate(${d * rotateAngle * (inverse ? -1 : 1)})`
+      );
     g.append("path")
       .attr("d", path)
       .attr("class", (d) => `stem_${godes[d]}`)
@@ -224,6 +234,7 @@ export function useGodesPie(
       .attr("fill", Color.linghtFont)
       .attr("text-anchor", "middle"); // 设置文本位置和颜色
   }
+  return group;
 }
 
 /** 五行说明 */
