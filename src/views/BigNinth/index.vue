@@ -155,6 +155,78 @@ function start() {
       </div>
     </div>
   </div>
+  <!-- 地支的五行和阴阳 -->
+  <div class="branch-info">
+    <p style="background-color: #191919">子</p>
+    <p style="background-color: #191919">丑</p>
+    <p style="background-color: #191919">寅</p>
+    <p style="background-color: #191919">卯</p>
+    <p style="background-color: #191919">辰</p>
+    <p style="background-color: #191919">巳</p>
+    <p style="background-color: #191919">午</p>
+    <p style="background-color: #191919">未</p>
+    <p style="background-color: #191919">申</p>
+    <p style="background-color: #191919">酉</p>
+    <p style="background-color: #191919">戌</p>
+    <p style="background-color: #191919">亥</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>水</p>
+    <p>土</p>
+    <p>木</p>
+    <p>木</p>
+    <p>土</p>
+    <p>火</p>
+    <p>火</p>
+    <p>土</p>
+    <p>金</p>
+    <p>金</p>
+    <p>土</p>
+    <p>水</p>
+  </div>
+  <!-- 天干的五行和阴阳 -->
+  <div class="stem-info">
+    <p style="background-color: #191919">甲</p>
+    <p style="background-color: #191919">乙</p>
+    <p style="background-color: #191919">丙</p>
+    <p style="background-color: #191919">丁</p>
+    <p style="background-color: #191919">戊</p>
+    <p style="background-color: #191919">己</p>
+    <p style="background-color: #191919">庚</p>
+    <p style="background-color: #191919">辛</p>
+    <p style="background-color: #191919">壬</p>
+    <p style="background-color: #191919">癸</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>阳</p>
+    <p>阴</p>
+    <p>木</p>
+    <p>木</p>
+    <p>火</p>
+    <p>火</p>
+    <p>土</p>
+    <p>土</p>
+    <p>金</p>
+    <p>金</p>
+    <p>水</p>
+    <p>水</p>
+  </div>
 </template>
 
 <style lang="less" scoped>
@@ -177,5 +249,25 @@ function start() {
   display: flex;
   margin-bottom: 10px;
   // justify-content: space-between;
+}
+.branch-info {
+  display: flex;
+  flex-wrap: wrap;
+  p {
+    width: 8.3%;
+    margin: 0;
+    padding: 5px 0;
+    text-align: center;
+  }
+}
+.stem-info {
+  display: flex;
+  flex-wrap: wrap;
+  p {
+    width: 10%;
+    margin: 0;
+    padding: 5px 0;
+    text-align: center;
+  }
 }
 </style>
