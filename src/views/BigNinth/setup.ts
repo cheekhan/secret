@@ -35,13 +35,13 @@ export function useRect(
   // 地盘静态文字
   group
     .append("text")
-    .text("子")
+    .text("子(23)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
-    .attr("transform", `translate(${250 - 8},${250 + 180 + 40})`);
+    .attr("transform", `translate(${250 - 8-10},${250 + 180 + 40})`);
   group
     .append("text")
-    .text("丑")
+    .text("丑(01)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
     .attr("transform", `translate(${250 - 8 - 150 + 25},${250 + 180 + 30})`);
@@ -53,7 +53,7 @@ export function useRect(
     .attr("transform", `translate(${250 - 8 - 150 + 50},${250 + 180 + 15})`);
   group
     .append("text")
-    .text("寅")
+    .text("寅(03)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
     .attr("transform", `translate(${30},${166 * 2 + 50})`);
@@ -65,13 +65,13 @@ export function useRect(
     .attr("transform", `translate(${30 + 25},${166 * 2 + 50 - 25})`);
   group
     .append("text")
-    .text("卯")
+    .text("卯(05)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
-    .attr("transform", `translate(${30},${167 + 90})`);
+    .attr("transform", `translate(${30-15},${167 + 90})`);
   group
     .append("text")
-    .text("辰")
+    .text("辰(07)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
     .attr("transform", `translate(${30},${80 + 45})`);
@@ -83,10 +83,10 @@ export function useRect(
     .attr("transform", `translate(${30 + 25},${80 + 45 + 25})`);
   group
     .append("text")
-    .text("巳")
+    .text("巳(09)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
-    .attr("transform", `translate(${100 + 25},${50 + 10})`);
+    .attr("transform", `translate(${100 },${50 + 10})`);
   group // 丙，戊 => 巳
     .append("text")
     .text("丙")
@@ -101,14 +101,14 @@ export function useRect(
     .attr("transform", `translate(${100 + 60},${50 + 10 + 10})`);
   group
     .append("text")
-    .text("午")
+    .text("午(11)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
-    .attr("transform", `translate(${250 - 8},${50 - 10})`);
+    .attr("transform", `translate(${250 - 8-10},${50 - 10})`);
 
   group
     .append("text")
-    .text("未")
+    .text("未(13)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
     .attr("transform", `translate(${166 * 2 + 50 - 25},${50 + 10})`);
@@ -126,10 +126,10 @@ export function useRect(
     .attr("transform", `translate(${166 * 2 + 50 - 25 + 15},${50 + 10 + 30})`);
   group
     .append("text")
-    .text("申")
+    .text("申(15)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
-    .attr("transform", `translate(${166 * 2 + 120},${80 + 45})`);
+    .attr("transform", `translate(${166 * 2 + 110},${80 + 45})`);
   group // 庚 => 申
     .append("text")
     .text("庚")
@@ -138,16 +138,16 @@ export function useRect(
     .attr("transform", `translate(${166 * 2 + 120 - 25},${80 + 45 + 25})`);
   group
     .append("text")
-    .text("酉")
+    .text("酉(17)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
-    .attr("transform", `translate(${166 * 2 + 120},${167 + 90})`);
+    .attr("transform", `translate(${166 * 2 + 110},${167 + 90})`);
   group
     .append("text")
-    .text("戌")
+    .text("戌(19)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
-    .attr("transform", `translate(${166 * 2 + 120},${166 * 2 + 50})`);
+    .attr("transform", `translate(${166 * 2 + 110},${166 * 2 + 50})`);
   group // 辛 =>  戌
     .append("text")
     .text("辛")
@@ -156,7 +156,7 @@ export function useRect(
     .attr("transform", `translate(${166 * 2 + 120 - 25},${166 * 2 + 25})`);
   group
     .append("text")
-    .text("亥")
+    .text("亥(21)")
     .attr("font-size", 18)
     .attr("fill", Color.linghtFont)
     .attr("transform", `translate(${166 * 2 + 50 - 25},${250 + 180 + 30})`);
@@ -248,7 +248,25 @@ export function useWxInfo(
     .attr("cx", 0)
     .attr("cy", 0)
     .attr("r", size.wuxingSize)
-    .attr("fill", Color.CenterBg);
+    .attr("fill", Color.CenterBg)
+    .attr("stroke", "#414243");
+  ["金", "水", "木", "火", "土"].forEach((wx, index) => {
+    group
+      .append("circle")
+      .attr("r", 15)
+      .attr("cy", -size.wuxingSize * 0.6)
+      .attr("cx", 0)
+      .attr("fill", Color[wx])
+      .attr("transform", `rotate(${index * 72})`);
+    group
+      .append("text")
+      .text(wx)
+      .attr("y", -size.wuxingSize * 0.6)
+      .attr("x", 0)
+      .attr("dx", -8)
+      .attr("dy", 5)
+      .attr("transform", `rotate(${index * 72})`);
+  });
 }
 /** 获取时间 */
 export function useDate() {
