@@ -13,8 +13,8 @@
     "windows": [
       {
         "title": "cheekhan工具包",
-        "closable": false,
-        "minimizable": false,
+        "closable": true,
+        "minimizable": true,
         "resizable": false,
         "width": 1280,
         "height": 720
@@ -25,7 +25,7 @@
     },
     "trayIcon": {
       "iconPath": "icons/128x128.png",
-      "menuOnLeftClick": false,
+      "menuOnLeftClick": true,
       "title": "MacOs",
       "tooltip": "真灵"
     }
