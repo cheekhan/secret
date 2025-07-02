@@ -14,7 +14,8 @@ const routes: Array<RouteRecordRaw> = [
         children: [
             {
                 path: '',
-                redirect: '/big-ninth',
+                // redirect: '/big-ninth',
+                redirect: '/m3u8',
             },
             {
                 path: 'big-ninth',
