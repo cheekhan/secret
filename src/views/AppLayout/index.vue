@@ -5,38 +5,11 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 const router = useRouter()
 const aside = ref([
     {
-        title: '自由和自律',
-        items: [
-            {
-                title: '不良癖好',
-                path: '/no-smoking',
-            },
-        ],
-    },
-    {
         title: '天灵地也灵',
         items: [
             {
                 title: '转动时间',
                 path: '/big-ninth',
-            },
-        ],
-    },
-    {
-        title: '小小工具集',
-        items: [
-            {
-                title: '😍😍下载',
-                path: '/m3u8',
-            },
-        ],
-    },
-    {
-        title: '轻松一下',
-        items: [
-            {
-                title: '城市迷宫',
-                path: '/game-city',
             },
         ],
     },

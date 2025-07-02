@@ -217,10 +217,11 @@ class JiaZi {
      * @returns
      */
     getDay(d: Date) {
-        let step = new Date('2025/04/22').getTime() - d.getTime()
+        let step = new Date('2025-04-22').getTime() - d.getTime()
         step = step / (1000 * 60 * 60 * 24)
         step = Math.ceil(step)
-        return this.set[(this.dayIndex + step) % 59]
+        // return this.set[(this.dayIndex + step) % 59]
+        return [0,0]
     }
 }
 

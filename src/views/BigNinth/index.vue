@@ -30,7 +30,7 @@ const date = ref(useDate())
 function fetchDate() {
     date.value = useDate()
     // 日的干支
-    const dateStr = `${date.value.y}/${date.value.M}/${date.value.d}`
+    const dateStr = `${date.value.y}-${date.value.M}-${date.value.d}`
     const [g, z] = jiazi.getDay(new Date(dateStr))
     day_stem.value = g
     day_branch.value = z

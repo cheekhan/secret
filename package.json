@@ -13,7 +13,6 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@babylonjs/core": "^8.0.1",
     "@element-plus/icons-vue": "^2.3.1",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-opener": "^2",
