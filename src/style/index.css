@@ -1,4 +1,4 @@
-@import "reset.css";
+@import 'reset.css';
 
 :root {
     /* 自定义全局变量 */
@@ -11,4 +11,27 @@
     --self-bg-color-0: #212327;
     --self-bg-color-1: #292a2d;
     --self-bg-color-2: #404045;
+}
+/* 
+响应式的样式，控制大小屏的展示 
+小屏展示：app-show-s 
+大屏展示：app-show-b
+*/
+/*  小屏幕  */
+@media screen and (max-width: 460px) {
+    .app-show-s {
+        display: block;
+    }
+    .app-show-b {
+        display: none;
+    } 
+}
+/*  大屏幕 */
+@media screen and (min-width: 461px) {
+    .app-show-s {
+        display: none;
+    }
+    .app-show-b {
+        display: block;
+    } 
 }

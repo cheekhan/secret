@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import Button from '@/components/BaseButton/index.vue'
 const router = useRouter()
 const aside = ref([
     {
@@ -20,9 +20,10 @@ function handleRouter(path: string) {
 }
 </script>
 <template>
-    <el-config-provider :locale="zhCn">
-        <el-container class="app-container">
-            <el-aside width="250px">
+    <div class="app-container">
+        <div class="app-aside">
+            <div class="app-show-b">
+                <!-- 大屏的菜单 -->
                 <template v-for="group in aside">
                     <p class="page-group">{{ group.title }}</p>
                     <p
@@ -33,22 +34,43 @@ function handleRouter(path: string) {
                         {{ item.title }}
                     </p>
                 </template>
-            </el-aside>
-            <el-main>
-                <el-scrollbar>
-                    <RouterView />
-                </el-scrollbar>
-            </el-main>
-        </el-container>
-    </el-config-provider>
+            </div>
+            <div class="app-show-s">
+                <Button></Button>
+            </div>
+        </div>
+        <div class="app-main">
+            <RouterView />
+        </div>
+    </div>
 </template>
 <style lang="less" scoped>
 .app-container {
-    //width: 1280px;
-    //height: 720px;
+    display: block;
     height: 100vh;
     background-color: var(--self-bg-color-1);
-    //overflow: hidden;
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+// 小屏幕 app-show-s app-show-b
+@media screen and (max-width: 460px) {
+    .app-aside {
+        height: 35px;
+    }
+}
+// 大屏幕
+@media screen and (min-width: 461px) {
+    .app-container {
+        display: flex;
+    }
+    .app-aside {
+        width: 250px;
+    }
+    .app-main {
+        width: 0;
+        flex-grow: 1;
+    }
 }
 
 .page-group {
