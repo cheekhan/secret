@@ -10,6 +10,9 @@ const aside = ref([
             {
                 title: '转动时间',
                 path: '/big-ninth',
+            },            {
+                title: '天人感应',
+                path: '/liu-yao',
             },
         ],
     },

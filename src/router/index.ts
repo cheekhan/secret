@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import AppLayout from '@/views/AppLayout/index.vue'
 /** 其它页面 */
 import BigNinth from '@/views/BigNinth/index.vue'
+import Liuyao from '@/views/LiuYao/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -11,11 +12,15 @@ const routes: Array<RouteRecordRaw> = [
         children: [
             {
                 path: '',
-                redirect: '/big-ninth',
+                redirect: '/liu-yao',
             },
             {
                 path: 'big-ninth',
                 component: BigNinth,
+            },
+            {
+                path: 'liu-yao',
+                component: Liuyao,
             },
         ],
     },
