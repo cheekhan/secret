@@ -1,0 +1,23 @@
+{
+    "name": "@cheekhan/dbky",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "bin": {
+        "dbky": "dist/bin"
+    },
+    "scripts": {
+        "build": "rollup -c"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.13.0",
+    "dependencies": {
+        "commander": "^14.0.0",
+        "fs-extra": "^11.3.0"
+    },
+    "devDependencies": {
+        "rollup": "^4.44.2"
+    }
+}
