@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process'
-import {copySync} from "fs-extra/esm"
+import { copyFileSync, mkdirSync, existsSync, writeFileSync } from 'fs'
 /**
  * 执行获取改动文件的git 命令
  * @param {*} uname
@@ -22,14 +22,21 @@ function exeFile(uname) {
  * 解析改动文件，并且打包
  * @param {*} logs
  */
-function parseFile(logs) {
-    const files = []
+function parseFile(logs, name) {
+    // const files = []
     logs.forEach((l) => {
         if (l.startsWith('A\t')) {
-            files.push(l.replace('A', '').trim())
+            // files.push(l.replace('A', '').trim())
+            const filePath = l.replace('A', '').trim()
+            const files = filePath.split('/')
+            const fileName = files[files.length - 1]
+            if (existsSync(filePath)) {
+                console.log(`复制文件：${filePath}`)
+                copyFileSync(filePath, `./cr/${name}/code/${fileName}`)
+            }
         }
     })
-    console.log('改动文件：', files)
+    // console.log('改动文件：', files)
 }
 
 function exePatch(uname) {
@@ -50,8 +57,9 @@ function exePatch(uname) {
  * 解析改动差异
  * @param {*} logs
  */
-function parsePatch(logs) {
-    console.log('直接写入文件',logs)
+function parsePatch(logs, name) {
+    // console.log('直接写入文件', logs)
+    writeFileSync(`./cr/${name}/git-log.txt`, logs.join('\r\n'))
 }
 /**
  * 按时间范围过滤log
@@ -98,10 +106,12 @@ function datePick(since, until, logs) {
  * @param {*} until
  */
 export default function (since, until, name) {
+    mkdirSync(`./cr/${name}`, { recursive: true })
+    mkdirSync(`./cr/${name}/code`, { recursive: true })
     const fileLogs = datePick(since, until, exeFile(name))
-    parseFile(fileLogs)
+    parseFile(fileLogs, name)
     const patchLogs = datePick(since, until, exePatch(name))
-    parsePatch(patchLogs)
+    parsePatch(patchLogs, name)
 }
 
 /**
