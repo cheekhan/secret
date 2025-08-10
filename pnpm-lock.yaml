@@ -26,6 +26,9 @@ importers:
       '@tauri-apps/plugin-opener':
         specifier: ^2
         version: 2.2.6
+      babylonjs:
+        specifier: ^8.22.0
+        version: 8.22.0
       d3:
         specifier: ^7.9.0
         version: 7.9.0
@@ -1269,6 +1272,9 @@ packages:
 
   async-validator@4.2.5:
     resolution: {integrity: sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==}
+
+  babylonjs@8.22.0:
+    resolution: {integrity: sha512-T9K3Njwb8LJB43+1RgfCLNNmgjzCyD6ZLyJmiDrywaX/U9v0NYBb6s5Sx4ebOthD5YkICHtCLSYXbFsLalCPqg==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -3360,6 +3366,8 @@ snapshots:
   async-validator@4.2.5:
     optional: true
 
+  babylonjs@8.22.0: {}
+
   balanced-match@1.0.2: {}
 
   binary-extensions@2.3.0: {}
@@ -4493,7 +4501,7 @@ snapshots:
 
   vue-eslint-parser@10.1.1(eslint@9.23.0):
     dependencies:
-      debug: 4.4.0
+      debug: 4.4.1
       eslint: 9.23.0
       eslint-scope: 8.3.0
       eslint-visitor-keys: 4.2.0

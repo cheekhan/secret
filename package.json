@@ -15,6 +15,7 @@
   "dependencies": {
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-opener": "^2",
+    "babylonjs": "^8.22.0",
     "d3": "^7.9.0",
     "dayjs": "^1.11.13",
     "vant": "^4.9.21",
