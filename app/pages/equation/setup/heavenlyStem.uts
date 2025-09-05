@@ -1,0 +1,174 @@
+import { FiveElement, YinYang, type Relationship } from "./yinyangWuxing.uts"
+
+/**
+ * 天干
+ * 抛出天干的基类、天干的十个实例
+ */
+
+type stem = '甲' | "乙" | "丙" | "丁" | "戊" | "己" | "庚" | "辛" | "壬" | "癸"
+
+
+/** 地支基类 */
+export abstract class HeavenlyStem {
+    abstract fiveEl: FiveElement;
+    abstract yinYang: YinYang;
+    abstract value: stem;
+    abstract id: number;
+    abstract getLiuHe(target: HeavenlyStem): boolean;
+
+    static fiveElRel(src: FiveElement, tar: FiveElement): Relationship {
+        type relationMap = Record<FiveElement, Record<FiveElement, Relationship>>;
+        const relMap: relationMap = {
+            //"生" | "克" | "被生" | "被克" | "相同";
+            [FiveElement.Jin]: {
+                [FiveElement.Jin]: "相同",
+                [FiveElement.Shui]: "生",
+                [FiveElement.Mu]: "克",
+                [FiveElement.Huo]: "被克",
+                [FiveElement.Tu]: "被生",
+            },
+            [FiveElement.Shui]: {
+                [FiveElement.Jin]: "被生",
+                [FiveElement.Shui]: "相同",
+                [FiveElement.Mu]: "生",
+                [FiveElement.Huo]: "克",
+                [FiveElement.Tu]: "被克",
+            },
+            [FiveElement.Mu]: {
+                [FiveElement.Jin]: "被克",
+                [FiveElement.Shui]: "被生",
+                [FiveElement.Mu]: "相同",
+                [FiveElement.Huo]: "生",
+                [FiveElement.Tu]: "克",
+            },
+            [FiveElement.Huo]: {
+                [FiveElement.Jin]: "克",
+                [FiveElement.Shui]: "被克",
+                [FiveElement.Mu]: "被生",
+                [FiveElement.Huo]: "相同",
+                [FiveElement.Tu]: "生",
+            },
+            [FiveElement.Tu]: {
+                [FiveElement.Jin]: "生",
+                [FiveElement.Shui]: "克",
+                [FiveElement.Mu]: "被克",
+                [FiveElement.Huo]: "被生",
+                [FiveElement.Tu]: "相同",
+            },
+        };
+        return relMap[src][tar];
+    }
+}
+
+export class StemJia extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '甲'
+    id: number = 1
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemYi extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '乙'
+    id: number = 2
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemBing extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '丙'
+    id: number = 3
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemDing extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '丁'
+    id: number = 4
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemWu extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '戊'
+    id: number = 5
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemJi extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '己'
+    id: number = 6
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemGeng extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '庚'
+    id: number = 7
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemXin extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '辛'
+    id: number = 8
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemRen extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '壬'
+    id: number = 9
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class StemGui extends HeavenlyStem {
+    fiveEl: FiveElement = FiveElement.Huo
+    yinYang: YinYang = YinYang.Yang
+    value: stem = '癸'
+    id: number = 10
+    getLiuHe(target: HeavenlyStem): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export default [
+    new StemJia(),
+    new StemYi(),
+    new StemBing(),
+    new StemDing(),
+    new StemWu(),
+    new StemJi(),
+    new StemGeng(),
+    new StemXin(),
+    new StemRen(),
+    new StemGui(),
+]

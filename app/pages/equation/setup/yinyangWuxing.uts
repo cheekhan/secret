@@ -1,0 +1,17 @@
+/** 阴阳五行的类型声明 */
+const enum YinYang {
+    Yin,
+    Yang,
+}
+const enum FiveElement {
+    Jin,
+    Shui,
+    Mu,
+    Huo,
+    Tu,
+}
+export { YinYang, FiveElement };
+type Relationship = "生" | "克" | "被生" | "被克" | "相同";
+
+
+export type { Relationship }

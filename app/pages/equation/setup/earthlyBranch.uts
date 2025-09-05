@@ -1,0 +1,522 @@
+import { FiveElement, YinYang, type Relationship } from "./yinyangWuxing.uts"
+
+/**
+ * 地支：
+ * 抛出了地支类、地支实例
+ */
+
+type branch =
+    | "子"
+    | "丑"
+    | "寅"
+    | "卯"
+    | "辰"
+    | "巳"
+    | "午"
+    | "未"
+    | "申"
+    | "酉"
+    | "戌"
+    | "亥";
+
+
+/** 地支基类 */
+abstract class EarthlyBranch {
+    abstract fiveEl: FiveElement;
+    abstract yinYang: YinYang;
+    abstract value: branch;
+    abstract id: number;
+    // 六合
+    abstract getLiuHe(target: EarthlyBranch): boolean;
+    // 三合
+    abstract getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement>;
+    // 相冲
+    abstract getChong(target: EarthlyBranch): boolean;
+    // 相刑
+    abstract getXing(target: EarthlyBranch): boolean;
+    // 相害
+    abstract getHai(target: EarthlyBranch): boolean;
+    // 相破
+    abstract getPo(target: EarthlyBranch): boolean;
+    // 计算五行生克
+    getFiveRel(target: EarthlyBranch): Relationship {
+        return EarthlyBranch.fiveElRel(this.fiveEl, target.fiveEl);
+    }
+    static fiveElRel(src: FiveElement, tar: FiveElement): Relationship {
+        type relationMap = Record<FiveElement, Record<FiveElement, Relationship>>;
+        const relMap: relationMap = {
+            //"生" | "克" | "被生" | "被克" | "相同";
+            [FiveElement.Jin]: {
+                [FiveElement.Jin]: "相同",
+                [FiveElement.Shui]: "生",
+                [FiveElement.Mu]: "克",
+                [FiveElement.Huo]: "被克",
+                [FiveElement.Tu]: "被生",
+            },
+            [FiveElement.Shui]: {
+                [FiveElement.Jin]: "被生",
+                [FiveElement.Shui]: "相同",
+                [FiveElement.Mu]: "生",
+                [FiveElement.Huo]: "克",
+                [FiveElement.Tu]: "被克",
+            },
+            [FiveElement.Mu]: {
+                [FiveElement.Jin]: "被克",
+                [FiveElement.Shui]: "被生",
+                [FiveElement.Mu]: "相同",
+                [FiveElement.Huo]: "生",
+                [FiveElement.Tu]: "克",
+            },
+            [FiveElement.Huo]: {
+                [FiveElement.Jin]: "克",
+                [FiveElement.Shui]: "被克",
+                [FiveElement.Mu]: "被生",
+                [FiveElement.Huo]: "相同",
+                [FiveElement.Tu]: "生",
+            },
+            [FiveElement.Tu]: {
+                [FiveElement.Jin]: "生",
+                [FiveElement.Shui]: "克",
+                [FiveElement.Mu]: "被克",
+                [FiveElement.Huo]: "被生",
+                [FiveElement.Tu]: "相同",
+            },
+        };
+        return relMap[src][tar];
+    }
+}
+
+export class BranchZi extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Shui;
+    yinYang: YinYang = YinYang.Yang;
+    value: branch = "子";
+    id: number = 1;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "丑";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "申" && target2.value === "辰") ||
+            (target1.value === "辰" && target2.value === "申")
+        ) {
+            return Promise.resolve(FiveElement.Shui);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        return target.value === "午";
+    }
+    getXing(target: EarthlyBranch): boolean {
+        return target.value === "卯";
+    }
+    getHai(target: EarthlyBranch): boolean {
+        return target.value === "未";
+    }
+    getPo(target: EarthlyBranch): boolean {
+        return target.value === "酉";
+    }
+}
+
+export class BranchChou extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Tu;
+    yinYang: YinYang = YinYang.Yin;
+    value: branch = "丑";
+    id: number = 2;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class BranchYin extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Mu;
+    yinYang: YinYang = YinYang.Yang;
+    value: branch = "寅";
+    id: number = 3;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "亥";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "戌" && target2.value === "午") ||
+            (target1.value === "午" && target2.value === "戌")
+        ) {
+            return Promise.resolve(FiveElement.Huo);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        return target.value === "申";
+    }
+    getXing(target: EarthlyBranch): boolean {
+        return target.value === "巳";
+    }
+    getHai(target: EarthlyBranch): boolean {
+        return target.value === "巳";
+    }
+    getPo(target: EarthlyBranch): boolean {
+        return target.value === "亥";
+    }
+}
+
+export class BranchMao extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Mu;
+    yinYang: YinYang = YinYang.Yin;
+    value: branch = "卯";
+    id: number = 4;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class BranchChen extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Tu;
+    yinYang: YinYang = YinYang.Yang;
+    value: branch = "辰";
+    id: number = 5;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class BranchSi extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Huo;
+    yinYang: YinYang = YinYang.Yin;
+    value: branch = "巳";
+    id: number = 6;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+export class BranchWu extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Huo;
+    yinYang: YinYang = YinYang.Yang;
+    value: branch = "午";
+    id: number = 7;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+export class BranchWei extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Tu;
+    yinYang: YinYang = YinYang.Yin;
+    value: branch = "未";
+    id: number = 8;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+export class BranchShen extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Jin;
+    yinYang: YinYang = YinYang.Yang;
+    value: branch = "申";
+    id: number = 9;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+export class BranchYou extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Jin;
+    yinYang: YinYang = YinYang.Yin;
+    value: branch = "酉";
+    id: number = 10;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+export class BranchXu extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Tu;
+    yinYang: YinYang = YinYang.Yang;
+    value: branch = "戌";
+    id: number = 11;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+export class BranchHai extends EarthlyBranch {
+    fiveEl: FiveElement = FiveElement.Shui;
+    yinYang: YinYang = YinYang.Yin;
+    value: branch = "亥";
+    id: number = 12;
+    getLiuHe(target: EarthlyBranch): boolean {
+        return target.value === "子";
+    }
+    getSanHe(
+        target1: EarthlyBranch,
+        target2: EarthlyBranch
+    ): Promise<FiveElement> {
+        if (
+            (target1.value === "酉" && target2.value === "巳") ||
+            (target1.value === "巳" && target2.value === "酉")
+        ) {
+            return Promise.resolve(FiveElement.Jin);
+        } else {
+            return Promise.reject("不合");
+        }
+    }
+    getChong(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getXing(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getHai(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+    getPo(target: EarthlyBranch): boolean {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export { EarthlyBranch };
+
+export default [
+    new BranchZi(),
+    new BranchChou(),
+    new BranchYin(),
+    new BranchMao(),
+    new BranchChen(),
+    new BranchSi(),
+    new BranchWu(),
+    new BranchWei(),
+    new BranchShen(),
+    new BranchYou(),
+    new BranchXu(),
+    new BranchHai(),
+];
+

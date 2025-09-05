@@ -1,0 +1,80 @@
+/**
+ * 
+ * 干支计算
+ * 1、60个
+ * 2、获取指定的干支组合的下一位
+ */
+
+import branches, { EarthlyBranch } from "./earthlyBranch.uts"
+import stems, { HeavenlyStem } from "./heavenlyStem.uts"
+export type JiaziLink = { // 甲子的节点信息
+	data : [HeavenlyStem, EarthlyBranch],
+	next : JiaziLink | null
+}
+const createLink = () => {
+	let root : JiaziLink = { data: [stems[0], branches[0]], next: null }
+	let i = 0;
+	let head : JiaziLink | null = null;
+	let s = 1, b = 1;
+	while (i < 60) {
+		if (s >= 10) s = 0
+		if (b >= 12) b = 0
+		if (head) {
+			const node : JiaziLink = {
+				next: null,
+				data: [stems[s], branches[b]]
+			}
+			head.next = node
+			head = node
+		} else {
+			root = head = {
+				data: [stems[s], branches[b]],
+				next: null
+			}
+		}
+		s += 1;
+		b += 1;
+		i += 1
+	}
+	return root
+}
+
+export const root = createLink()
+/** 获取下一个干支组合 */
+export function findNext(stem : HeavenlyStem, branch : EarthlyBranch, step : number = 1) : JiaziLink | null {
+	let head = root
+	if (head) {
+		while (head) {
+			if (head.data[0].value === stem.value && head.data[1].value === branch.value) {
+				if (head.next) {
+					break // 找到当前节点
+				} else {
+					return null
+				}
+			}
+			head = head.next
+		}
+	}
+	while (step > 0) {
+		if (head && head.next) {
+			head = head.next
+		} else {
+			head = root
+		}
+		step -= 1
+	}
+	return head
+}
+// 将干支信息，组合为一个节点，并返回在链中的位置
+export function useJiaziNode(stem : HeavenlyStem, branch : EarthlyBranch) : JiaziLink | null {
+	let head = root
+	if (head) {
+		while (head) {
+			if (head.data[0].value === stem.value && head.data[1].value === branch.value) {
+				return head
+			}
+			head = head.next
+		}
+	}
+	return null
+}

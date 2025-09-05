@@ -1,0 +1,38 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://doc.dcloud.net.cn/uni-app-x/collocation/pagesjson.html
+		{
+			"path": "pages/equation/index",
+			"style": {
+				"navigationBarTitleText": "大六壬排盘"
+				
+			}
+		},
+		{
+			"path": "pages/record/index",
+			"style": {
+				"navigationBarTitleText": "六壬课列表"
+			}
+		}
+	],
+	"globalStyle": { 
+		"navigationBarBackgroundColor":"#000",
+		"navigationBarTextStyle": "white",
+		"backgroundColor": "#0d1117",
+		"backgroundColorContent": "#0d1117"
+	},
+	"uniIdRouter": {},
+	"tabBar": {
+		"color": "#999",
+		"selectedColor": "#f8f8f8",
+		"backgroundColor": "#333",
+		"list": [{
+				"pagePath": "pages/record/index",
+				"text": "记录"
+			},
+			{
+				"pagePath": "pages/equation/index",
+				"text": "排盘"
+			}
+		]
+	}
+}

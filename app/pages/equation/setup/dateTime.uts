@@ -1,0 +1,86 @@
+/**
+ * 推算四柱
+ * 年柱：从2025.01.29日，乙巳年，春节开始推算，依次记录每年春节日期
+ * 月柱：月柱的支是月建，就需要从2025年02月03日立春为寅开始，再利用年上起月法，得到月干
+ * 日柱：2025.01.29日，为戊戌日，依次推算,准确日期格式'2025-01-29T23:59:59+08:00'
+ * 时柱：按小时计算，得出时支，再使用日上起时法，得出时支
+ * 
+ * 月将：完整记录24节气，除了用于月建，还有用于月将的计算
+ */
+import { yearSplit, jieqi } from "./calender.uts"
+import stems, { HeavenlyStem } from "./heavenlyStem.uts"
+import branches, { EarthlyBranch } from "./earthlyBranch.uts"
+import { findNext, type JiaziLink, root } from "./stemBranch.uts"
+// 起始 年 和 日的干支
+const yearGanzhi : [HeavenlyStem, EarthlyBranch] = [stems[1], branches[5]]
+const dayGanzhi : [HeavenlyStem, EarthlyBranch] = [stems[4], branches[10]]
+
+export function useYmdhInfo(date ?: string) {
+	let yearInfo : JiaziLink = root; // 年柱
+	let monthInfo : JiaziLink = root; // 月柱
+	let dayInfo : JiaziLink = root; // 日柱
+	let hourInfo : EarthlyBranch | null = null; // 时柱
+	let yuejiangInfo : EarthlyBranch | null = null; // 月将
+
+	let current = new Date(date ? date : new Date());
+	if (isNaN(current.valueOf())) {  // 传入的字符串未正确的格式化出来
+		console.log(`使用【${date}】格式化日期错误`)
+		current = new Date()
+	}
+	// 遍历数组，计算年柱
+	yearSplit.some((y, i) => {
+		const yd = new Date(y)
+		if (current >= yd) {
+			// 检测到第一个低于当前日期的年开头,i就作为偏移量
+			yearInfo = findNext(yearGanzhi[0], yearGanzhi[1], i)
+			return true
+		}
+	})
+	// 计算日期差，得到日柱
+	const dayStart = new Date('2025-01-29T23:59:59+08:00')
+	dayInfo = findNext(dayGanzhi[0], dayGanzhi[1], Math.ceil((current.getTime() - dayStart.getTime()) / (1000 * 60 * 60 * 24)))
+	// 时间分为12份，计算时柱
+	const hours = current.getHours()
+	if (hours < 1) {
+		hourInfo = branches[0]
+	} else if (hours < 3) {
+		hourInfo = branches[1]
+	} else if (hours < 5) {
+		hourInfo = branches[2]
+	} else if (hours < 7) {
+		hourInfo = branches[3]
+	} else if (hours < 9) {
+		hourInfo = branches[4]
+	} else if (hours < 11) {
+		hourInfo = branches[5]
+	} else if (hours < 13) {
+		hourInfo = branches[6]
+	} else if (hours < 15) {
+		hourInfo = branches[7]
+	} else if (hours < 17) {
+		hourInfo = branches[8]
+	} else if (hours < 19) {
+		hourInfo = branches[9]
+	} else if (hours < 21) {
+		hourInfo = branches[10]
+	} else if (hours < 23) {
+		hourInfo = branches[11]
+	} else { hourInfo = branches[0] }
+	// 根据节气表，得到月将
+	jieqi[current.getFullYear()].some(j => {
+		if (current.valueOf() > new Date(j[0]).valueOf()) {
+			yuejiangInfo = j[1]
+		} else {
+			return true
+		}
+	})
+	return {
+		y: yearInfo.data,
+		m: monthInfo.data,
+		d: dayInfo?.data,
+		h: hourInfo,
+		yuejiang: yuejiangInfo,
+		current: current.toLocaleString()
+	}
+
+}

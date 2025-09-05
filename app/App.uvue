@@ -1,0 +1,26 @@
+<script lang="uts">
+	export default {
+		onLaunch: function () {
+			console.log('App Launch')
+		},
+		onShow: function () {
+			console.log('App Show')
+		},
+		onHide: function () {
+			console.log('App Hide')
+		},
+		onExit: function () {
+			console.log('App Exit')
+		},
+	}
+</script>
+
+<style>
+	.page-container {
+		padding: 10px;
+	}
+
+	page {
+		color: #f0f6fc;
+	}
+</style>

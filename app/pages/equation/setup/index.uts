@@ -1,0 +1,42 @@
+import { useYmdhInfo } from "./dateTime.uts"
+import { EarthlyBranch, default as branches } from "./earthlyBranch.uts"
+import { HeavenlyStem, default as stems } from "./heavenlyStem.uts"
+import { guiRenList,type GuiRen } from "./naturalOrgans.uts"
+import { root, findNext, useJiaziNode } from "./stemBranch.uts"
+import { type Relationship, FiveElement, YinYang } from "./yinyangWuxing.uts"
+
+export {
+    useYmdhInfo, // 获取四柱信息的函数
+    EarthlyBranch, branches, // 地支类，和地支列表
+    HeavenlyStem, stems, // 天干类，和天干列表
+    guiRenList, type GuiRen,// 贵人列表
+    root, findNext, useJiaziNode,// 甲子计算的方法
+    type Relationship, FiveElement, YinYang, // 阴阳五行的基础函数
+}
+
+/**
+ * 获取天盘布局
+ * @param t 
+ * @param d 
+ * @returns 
+ */
+export function useTianPie(t: EarthlyBranch, d: EarthlyBranch): Array<EarthlyBranch> {
+    const tianList = new Array<EarthlyBranch>(12);
+    let readListCount = 0; // 读取列表的次数
+    let tianBranchId = t.id - 1 // 从1开始
+    let diBranchId = d.id - 1
+    while (readListCount < 12) {
+        tianList[diBranchId] = branches[tianBranchId]
+        readListCount += 1
+        tianBranchId += 1
+        if (tianBranchId >= 12) tianBranchId = 0
+        diBranchId += 1
+        if (diBranchId >= 12) diBranchId = 0
+    }
+    return tianList
+}
+
+/** 获取地盘布局 */
+export function useGuirenPie() {
+    return guiRenList
+}

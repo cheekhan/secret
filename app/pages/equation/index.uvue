@@ -1,0 +1,136 @@
+<script setup>
+	import { branches, EarthlyBranch, useTianPie, useGuirenPie, useYmdhInfo } from "./setup/index.uts"
+	// 获取时间信息，包含了四柱推算
+	const ymdhInfo = ref(useYmdhInfo())
+	console.log(ymdhInfo.value)
+	// 月将相关
+	const yuejiang = ref<EarthlyBranch>(ymdhInfo.value.yuejiang || branches[0])
+	const onYuejiangConfirm = (e : UniPickerChangeEvent) => {
+		const id = e.detail.value
+		yuejiang.value = branches[id]
+	};
+	// 加时相关
+	const jiashi = ref<EarthlyBranch>(ymdhInfo.value.h || branches[0])
+	const onJiashiConfirm = (e : UniPickerChangeEvent) => {
+		const id = e.detail.value
+		jiashi.value = branches[id]
+	};
+	// 盘相关
+	const guirenPie = computed(() => useGuirenPie())
+	const diPie = ref<Array<EarthlyBranch>>(branches)
+	const tianPie = computed(() => useTianPie(yuejiang.value, jiashi.value))
+</script>
+
+<template>
+	<scroll-view class="page-container">
+		<view class="flex-row flex-between item-block">
+			<text>{{ymdhInfo.current}}</text>
+			<text>{{ymdhInfo.y[0].value}}{{ymdhInfo.y[1].value}}年，{{ymdhInfo.d[0].value}}{{ymdhInfo.d[1].value}}日</text>
+			<!-- 本命在X，行年在Y -->
+		</view>
+		<view class="item-block flex-row" style="justify-content: center;">
+			<picker style="margin-right: 20px;" @change="onYuejiangConfirm" :range="branches" range-key="value">
+				<text>月将：{{yuejiang.value}}</text>
+			</picker>
+			<picker @change="onJiashiConfirm" :range="branches" range-key="value">
+				<text>加时：{{jiashi.value}}</text>
+			</picker>
+		</view>
+		<!-- 绘制盘面 -->
+		<view class="item-block">
+			<view class="flex-row">
+				<view class="pan-item"></view>
+				<view class="pan-item"></view>
+				<view class="pan-item">{{ guirenPie[5] }}</view>
+				<view class="pan-item">{{ guirenPie[6] }}</view>
+				<view class="pan-item">{{ guirenPie[7] }}</view>
+				<view class="pan-item">{{ guirenPie[8] }}</view>
+			</view>
+			<view class="flex-row">
+				<view class="pan-item"></view>
+				<view class="pan-item"></view>
+				<view class="pan-item">{{ tianPie[5].value  }}</view>
+				<view class="pan-item">{{ tianPie[6].value }}</view>
+				<view class="pan-item">{{ tianPie[7].value  }}</view>
+				<view class="pan-item">{{ tianPie[8].value }}</view>
+			</view>
+			<view class="flex-row">
+				<view class="pan-item"></view>
+				<view class="pan-item"></view>
+				<view class="pan-item">{{ diPie[5].value }}</view>
+				<view class="pan-item">{{diPie[6].value }}</view>
+				<view class="pan-item">{{ diPie[7].value }}</view>
+				<view class="pan-item">{{ diPie[8].value}}</view>
+			</view>
+			<view class="flex-row">
+				<view class="pan-item">{{ guirenPie[4] }}</view>
+				<view class="pan-item">{{ tianPie[4].value }}</view>
+				<view class="pan-item">{{ diPie[4].value }}</view>
+				<view class="pan-item"></view>
+				<view class="pan-item"></view>
+				<view class="pan-item">{{ diPie[9].value }}</view>
+				<view class="pan-item">{{tianPie[9].value }}</view>
+				<view class="pan-item">{{ guirenPie[9]  }}</view>
+			</view>
+			<view class="flex-row">
+				<view class="pan-item">{{guirenPie[3] }}</view>
+				<view class="pan-item">{{ tianPie[3].value }}</view>
+				<view class="pan-item">{{ diPie[3].value}}</view>
+				<view class="pan-item"></view>
+				<view class="pan-item"></view>
+				<view class="pan-item">{{ diPie[10].value  }}</view>
+				<view class="pan-item">{{ tianPie[10].value }}</view>
+				<view class="pan-item">{{ guirenPie[10] }}</view>
+			</view>
+			<view class="flex-row">
+				<view class="pan-item"></view>
+				<view class="pan-item"></view>
+				<view class="pan-item">{{ diPie[2].value }}</view>
+				<view class="pan-item">{{ diPie[1].value  }}</view>
+				<view class="pan-item">{{ diPie[0].value  }}</view>
+				<view class="pan-item">{{ diPie[11].value }}</view>
+			</view>
+			<view class="flex-row">
+				<view class="pan-item"></view>
+				<view class="pan-item"></view>
+				<view class="pan-item">{{ tianPie[2].value}}</view>
+				<view class="pan-item">{{ tianPie[1].value }}</view>
+				<view class="pan-item">{{ tianPie[0].value}}</view>
+				<view class="pan-item">{{ tianPie[11].value }}</view>
+			</view>
+			<view class="flex-row">
+				<view class="pan-item"></view>
+				<view class="pan-item"></view>
+				<view class="pan-item">{{ guirenPie[2] }}</view>
+				<view class="pan-item">{{ guirenPie[1] }}</view>
+				<view class="pan-item">{{ guirenPie[0]  }}</view>
+				<view class="pan-item">{{ guirenPie[11] }}</view>
+			</view>
+		</view>
+		<view class="item-block">四课</view>
+		<view class="item-block">三传</view>
+		<view class="item-block">参考断语</view>
+	</scroll-view>
+</template>
+
+<style>
+	.flex-row {
+		flex-direction: row;
+	}
+
+	.flex-between {
+		justify-content: space-between;
+	}
+
+	.item-block {
+		margin-bottom: 30rpx;
+	}
+
+	.pan-item {
+		width: 90rpx;
+		height: 60rpx;
+		text-align: center;
+		line-height: 60rpx;
+		font-size: 35rpx;
+	}
+</style>
