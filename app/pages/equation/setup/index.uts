@@ -2,7 +2,7 @@ import { useYmdhInfo } from "./dateTime.uts"
 import { EarthlyBranch, default as branches } from "./earthlyBranch.uts"
 import { HeavenlyStem, default as stems } from "./heavenlyStem.uts"
 import { guiRenList, type GuiRen } from "./naturalOrgans.uts"
-import { root, findNext, useJiaziNode } from "./stemBranch.uts"
+import { root, findNext, useJiaziNode, useAllNodes } from "./stemBranch.uts"
 import { type Relationship, FiveElement, YinYang } from "./yinyangWuxing.uts"
 const useGuirenList = () => [...guiRenList] // 获取贵人的拷贝
 export {
@@ -10,7 +10,7 @@ export {
 	EarthlyBranch, branches, // 地支类，和地支列表
 	HeavenlyStem, stems, // 天干类，和天干列表
 	useGuirenList, type GuiRen,// 贵人列表
-	root, findNext, useJiaziNode,// 甲子计算的方法
+	root, findNext, useJiaziNode, useAllNodes,// 甲子计算的方法
 	type Relationship, FiveElement, YinYang, // 阴阳五行的基础函数
 }
 

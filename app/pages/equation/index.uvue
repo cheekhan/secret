@@ -1,5 +1,5 @@
 <script setup>
-	import { branches, EarthlyBranch, useTianPie, useGuirenPie, useYmdhInfo } from "./setup/index.uts"
+	import { branches, EarthlyBranch, useTianPie, useGuirenPie, useYmdhInfo, useAllNodes } from "./setup/index.uts"
 	// 获取时间信息，包含了四柱推算
 	const ymdhInfo = ref(useYmdhInfo())
 	console.log(ymdhInfo.value)
@@ -15,10 +15,23 @@
 		const id = e.detail.value
 		jiashi.value = branches[id]
 	};
+	// 日干支 
+	const jiaziList = useAllNodes() // 甲子列表
+	const dayGanzhiOptions = ref(jiaziList.map(e => {
+		return {
+			stem: e[0],
+			branch: e[1],
+			label: `${e[0].value}${e[1].value}`
+		}
+	}))
+	const dayGanzhi = ref(ymdhInfo.value.d)
+	const onDayConfirm = (e : UniPickerChangeEvent) => {
+		dayGanzhi.value = jiaziList[e.detail.value]
+	}
 	// 盘相关
 	const diPie = ref<Array<EarthlyBranch>>(branches)
 	const tianPie = computed(() => useTianPie(yuejiang.value, jiashi.value))
-	const guirenPie = computed(() => useGuirenPie(ymdhInfo.value.d[0], ymdhInfo.value.h, tianPie.value))
+	const guirenPie = computed(() => useGuirenPie(dayGanzhi.value[0], ymdhInfo.value.h, tianPie.value))
 </script>
 
 <template>
@@ -32,9 +45,13 @@
 			<picker style="margin-right: 20px;" @change="onYuejiangConfirm" :range="branches" range-key="value">
 				<text>月将：{{yuejiang.value}}</text>
 			</picker>
-			<picker @change="onJiashiConfirm" :range="branches" range-key="value">
+			<picker style="margin-right: 20px;" @change="onJiashiConfirm" :range="branches" range-key="value">
 				<text>加时：{{jiashi.value}}</text>
 			</picker>
+			<picker @change="onDayConfirm" :range="dayGanzhiOptions" range-key="label">
+				<text>日干支：{{dayGanzhi[0].value}}{{dayGanzhi[1].value}}</text>
+			</picker>
+
 		</view>
 		<!-- 绘制盘面 -->
 		<view class="item-block">

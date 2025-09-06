@@ -16,9 +16,9 @@ const yearGanzhi : [HeavenlyStem, EarthlyBranch] = [stems[1], branches[5]]
 const dayGanzhi : [HeavenlyStem, EarthlyBranch] = [stems[4], branches[10]]
 
 export function useYmdhInfo(date ?: string) : {
-	y : JiaziLink,
-	m : JiaziLink,
-	d : JiaziLink,
+	y : [HeavenlyStem, EarthlyBranch],
+	m : [HeavenlyStem, EarthlyBranch],
+	d : [HeavenlyStem, EarthlyBranch],
 	h : EarthlyBranch,
 	yuejiang : EarthlyBranch,
 	current : Date

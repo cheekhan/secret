@@ -78,3 +78,13 @@ export function useJiaziNode(stem : HeavenlyStem, branch : EarthlyBranch) : Jiaz
 	}
 	return null
 }
+// 获取甲子循环
+export function useAllNodes() {
+	let head = root;
+	const arr:Array<[HeavenlyStem, EarthlyBranch]> = [];
+	while (head.next) {
+		arr.push(head.data)
+		head = head.next
+	}
+	return arr
+}
