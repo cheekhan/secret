@@ -1,17 +1,17 @@
 import { useYmdhInfo } from "./dateTime.uts"
 import { EarthlyBranch, default as branches } from "./earthlyBranch.uts"
 import { HeavenlyStem, default as stems } from "./heavenlyStem.uts"
-import { guiRenList,type GuiRen } from "./naturalOrgans.uts"
+import { guiRenList, type GuiRen } from "./naturalOrgans.uts"
 import { root, findNext, useJiaziNode } from "./stemBranch.uts"
 import { type Relationship, FiveElement, YinYang } from "./yinyangWuxing.uts"
-
+const useGuirenList = () => [...guiRenList] // 获取贵人的拷贝
 export {
-    useYmdhInfo, // 获取四柱信息的函数
-    EarthlyBranch, branches, // 地支类，和地支列表
-    HeavenlyStem, stems, // 天干类，和天干列表
-    guiRenList, type GuiRen,// 贵人列表
-    root, findNext, useJiaziNode,// 甲子计算的方法
-    type Relationship, FiveElement, YinYang, // 阴阳五行的基础函数
+	useYmdhInfo, // 获取四柱信息的函数
+	EarthlyBranch, branches, // 地支类，和地支列表
+	HeavenlyStem, stems, // 天干类，和天干列表
+	useGuirenList, type GuiRen,// 贵人列表
+	root, findNext, useJiaziNode,// 甲子计算的方法
+	type Relationship, FiveElement, YinYang, // 阴阳五行的基础函数
 }
 
 /**
@@ -20,23 +20,95 @@ export {
  * @param d 
  * @returns 
  */
-export function useTianPie(t: EarthlyBranch, d: EarthlyBranch): Array<EarthlyBranch> {
-    const tianList = new Array<EarthlyBranch>(12);
-    let readListCount = 0; // 读取列表的次数
-    let tianBranchId = t.id - 1 // 从1开始
-    let diBranchId = d.id - 1
-    while (readListCount < 12) {
-        tianList[diBranchId] = branches[tianBranchId]
-        readListCount += 1
-        tianBranchId += 1
-        if (tianBranchId >= 12) tianBranchId = 0
-        diBranchId += 1
-        if (diBranchId >= 12) diBranchId = 0
-    }
-    return tianList
+export function useTianPie(t : EarthlyBranch, d : EarthlyBranch) : Array<EarthlyBranch> {
+	const tianList = new Array<EarthlyBranch>(12);
+	let readListCount = 0; // 读取列表的次数
+	let tianBranchId = t.id - 1 // 从1开始
+	let diBranchId = d.id - 1
+	while (readListCount < 12) {
+		tianList[diBranchId] = branches[tianBranchId]
+		readListCount += 1
+		tianBranchId += 1
+		if (tianBranchId >= 12) tianBranchId = 0
+		diBranchId += 1
+		if (diBranchId >= 12) diBranchId = 0
+	}
+	return tianList
 }
 
-/** 获取地盘布局 */
-export function useGuirenPie() {
-    return guiRenList
+/**
+ * 获取贵人列表
+ * stem:日干
+ * time:时间，卯到酉，取昼
+ * tian：天盘列表
+ 甲戊庚牛羊
+ 乙己鼠猴乡
+ 丙丁猪鸡位
+ 壬癸蛇兔藏
+ 六辛在马虎
+ */
+export function useGuirenPie(stem : HeavenlyStem, time : EarthlyBranch, tian : Array<EarthlyBranch>) : Array<GuiRen> {
+	let guirenRoot = branches[0]
+	if (stem.value === '甲' || stem.value === '戊' || stem.value === '庚') {
+		if (time.id >= 4 && time.id < 10) {
+			guirenRoot = branches[1]
+		} else {
+			guirenRoot = branches[7]
+		}
+	} else if (stem.value === '乙' || stem.value === '己') {
+		if (time.id >= 4 && time.id < 10) {
+			guirenRoot = branches[0]
+		} else {
+			guirenRoot = branches[8]
+		}
+	} else if (stem.value === '丙' || stem.value === '丁') {
+		if (time.id >= 4 && time.id < 10) {
+			guirenRoot = branches[11]
+		} else {
+			guirenRoot = branches[9]
+		}
+	} else if (stem.value === '壬' || stem.value === '癸') {
+		if (time.id >= 4 && time.id < 10) {
+			guirenRoot = branches[5]
+		} else {
+			guirenRoot = branches[3]
+		}
+	} else { // 六辛日
+		if (time.id >= 4 && time.id < 10) {
+			guirenRoot = branches[6]
+		} else {
+			guirenRoot = branches[2]
+		}
+
+	}
+	let index = 0;
+	tian.some((e, i) => {
+		if (e.id === guirenRoot.id) {
+			index = i
+			return true
+		}
+	})
+	const arr : GuiRen[] = new Array(12); // 贵人列表   
+	if (index >= 5 && index < 11) { // 地户，到天门之间，逆向排
+		const gui = useGuirenList()
+		while (gui.length) {
+			if (index < 0) {
+				index = 11
+			}
+			const n = gui.shift()
+			arr[index] = n;
+			index -= 1;
+		}
+	} else {
+		const gui = useGuirenList()
+		while (gui.length) {
+			if (index > 11) {
+				index = 0
+			}
+			const n = gui.shift()
+			arr[index] = n;
+			index += 1;
+		}
+	}
+	return arr
 }

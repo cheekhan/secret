@@ -15,12 +15,19 @@ import { findNext, type JiaziLink, root } from "./stemBranch.uts"
 const yearGanzhi : [HeavenlyStem, EarthlyBranch] = [stems[1], branches[5]]
 const dayGanzhi : [HeavenlyStem, EarthlyBranch] = [stems[4], branches[10]]
 
-export function useYmdhInfo(date ?: string) {
+export function useYmdhInfo(date ?: string) : {
+	y : JiaziLink,
+	m : JiaziLink,
+	d : JiaziLink,
+	h : EarthlyBranch,
+	yuejiang : EarthlyBranch,
+	current : Date
+} {
 	let yearInfo : JiaziLink = root; // 年柱
 	let monthInfo : JiaziLink = root; // 月柱
 	let dayInfo : JiaziLink = root; // 日柱
-	let hourInfo : EarthlyBranch | null = null; // 时柱
-	let yuejiangInfo : EarthlyBranch | null = null; // 月将
+	let hourInfo : EarthlyBranch = branches[0]; // 时柱
+	let yuejiangInfo : EarthlyBranch = branches[10]; // 月将
 
 	let current = new Date(date ? date : new Date());
 	if (isNaN(current.valueOf())) {  // 传入的字符串未正确的格式化出来
@@ -80,7 +87,7 @@ export function useYmdhInfo(date ?: string) {
 		d: dayInfo?.data,
 		h: hourInfo,
 		yuejiang: yuejiangInfo,
-		current: current.toLocaleString()
+		current: current
 	}
 
 }

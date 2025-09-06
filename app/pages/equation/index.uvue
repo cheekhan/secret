@@ -16,15 +16,15 @@
 		jiashi.value = branches[id]
 	};
 	// 盘相关
-	const guirenPie = computed(() => useGuirenPie())
 	const diPie = ref<Array<EarthlyBranch>>(branches)
 	const tianPie = computed(() => useTianPie(yuejiang.value, jiashi.value))
+	const guirenPie = computed(() => useGuirenPie(ymdhInfo.value.d[0], ymdhInfo.value.h, tianPie.value))
 </script>
 
 <template>
 	<scroll-view class="page-container">
 		<view class="flex-row flex-between item-block">
-			<text>{{ymdhInfo.current}}</text>
+			<text>{{ymdhInfo.current.toLocaleString()}}</text>
 			<text>{{ymdhInfo.y[0].value}}{{ymdhInfo.y[1].value}}年，{{ymdhInfo.d[0].value}}{{ymdhInfo.d[1].value}}日</text>
 			<!-- 本命在X，行年在Y -->
 		</view>
