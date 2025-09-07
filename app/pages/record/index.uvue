@@ -1,17 +1,19 @@
 <template>
-	<!-- #ifdef APP -->
-	<scroll-view style="flex:1">
-	<!-- #endif -->
-		
-	<!-- #ifdef APP -->
-	</scroll-view>
-	<!-- #endif -->
+	<input class="item-block" style="padding:10rpx" type="search" value="" placeholder="搜索课包含的内容" />
+	<text>🌟收藏的课盘</text>
 </template>
 
 <script setup>
-		
+
 </script>
 
 <style>
-		
+	.item-block {
+		padding: 20rpx;
+		margin: 5rpx 10rpx 20rpx 10rpx;
+		background-color: #0c0e12;
+		border-radius: 5rpx;
+		border: 4rpx solid #191e24;
+		box-sizing: border-box;
+	}
 </style>

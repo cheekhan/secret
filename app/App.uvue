@@ -16,12 +16,9 @@
 </script>
 
 <style>
-	.page-container {
-		padding: 10px;
-	}
 
 	page {
 		color: #f0f6fc;
-		background-color: #0d1117;
+		background-color: rgb(4, 8, 10);
 	}
 </style>

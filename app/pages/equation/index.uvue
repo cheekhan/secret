@@ -35,7 +35,7 @@
 </script>
 
 <template>
-	<scroll-view class="page-container">
+	<scroll-view>
 		<view class="flex-row flex-between item-block">
 			<text>{{ymdhInfo.current.toLocaleString()}}</text>
 			<text>{{ymdhInfo.y[0].value}}{{ymdhInfo.y[1].value}}年，{{ymdhInfo.d[0].value}}{{ymdhInfo.d[1].value}}日</text>
@@ -54,7 +54,7 @@
 
 		</view>
 		<!-- 绘制盘面 -->
-		<view class="item-block">
+		<view class="item-block" style="padding-left: 0;">
 			<view class="flex-row">
 				<view class="pan-item"></view>
 				<view class="pan-item"></view>
@@ -80,23 +80,23 @@
 				<view class="pan-item">{{ diPie[8].value}}</view>
 			</view>
 			<view class="flex-row">
-				<view class="pan-item">{{ guirenPie[4] }}</view>
-				<view class="pan-item">{{ tianPie[4].value }}</view>
-				<view class="pan-item">{{ diPie[4].value }}</view>
+				<view class="pan-item item-small-left">{{ guirenPie[4] }}</view>
+				<view class="pan-item pan-item-small">{{ tianPie[4].value }}</view>
+				<view class="pan-item pan-item-small">{{ diPie[4].value }}</view>
 				<view class="pan-item"></view>
 				<view class="pan-item"></view>
-				<view class="pan-item">{{ diPie[9].value }}</view>
-				<view class="pan-item">{{tianPie[9].value }}</view>
+				<view class="pan-item item-small-right pan-item-small">{{ diPie[9].value }}</view>
+				<view class="pan-item pan-item-small">{{tianPie[9].value }}</view>
 				<view class="pan-item">{{ guirenPie[9]  }}</view>
 			</view>
 			<view class="flex-row">
-				<view class="pan-item">{{guirenPie[3] }}</view>
-				<view class="pan-item">{{ tianPie[3].value }}</view>
-				<view class="pan-item">{{ diPie[3].value}}</view>
+				<view class="pan-item item-small-left">{{guirenPie[3] }}</view>
+				<view class="pan-item pan-item-small">{{ tianPie[3].value }}</view>
+				<view class="pan-item pan-item-small">{{ diPie[3].value}}</view>
 				<view class="pan-item"></view>
 				<view class="pan-item"></view>
-				<view class="pan-item">{{ diPie[10].value  }}</view>
-				<view class="pan-item">{{ tianPie[10].value }}</view>
+				<view class="pan-item item-small-right pan-item-small">{{ diPie[10].value  }}</view>
+				<view class="pan-item pan-item-small">{{ tianPie[10].value }}</view>
 				<view class="pan-item">{{ guirenPie[10] }}</view>
 			</view>
 			<view class="flex-row">
@@ -127,6 +127,7 @@
 		<view class="item-block">四课</view>
 		<view class="item-block">三传</view>
 		<view class="item-block">参考断语</view>
+		<view class="item-block">解析</view>
 	</scroll-view>
 </template>
 
@@ -140,7 +141,12 @@
 	}
 
 	.item-block {
-		margin-bottom: 30rpx;
+		padding: 20rpx;
+		margin: 5rpx 10rpx 20rpx 10rpx;
+		background-color: #0c0e12;
+		border-radius: 5rpx;
+		border: 4rpx solid #191e24;
+		box-sizing: border-box;
 	}
 
 	.pan-item {
@@ -149,5 +155,16 @@
 		text-align: center;
 		line-height: 60rpx;
 		font-size: 35rpx;
+	}
+
+	.pan-item-small {
+		width: 70rpx;
+	}
+
+	.item-small-left {
+		margin-left: 30rpx;
+	}
+	.item-small-right {
+		margin-left: 20rpx;
 	}
 </style>

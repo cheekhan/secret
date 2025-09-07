@@ -4,7 +4,7 @@
 			"path": "pages/equation/index",
 			"style": {
 				"navigationBarTitleText": "大六壬排盘"
-				
+
 			}
 		},
 		{
@@ -14,11 +14,11 @@
 			}
 		}
 	],
-	"globalStyle": { 
-		"navigationBarBackgroundColor":"#000",
+	"globalStyle": {
+		"navigationBarBackgroundColor": "#04080a",
 		"navigationBarTextStyle": "white",
-		"backgroundColor": "#0d1117",
-		"backgroundColorContent": "#0d1117"
+		"backgroundColor": "#04080a",
+		"backgroundColorContent": "#04080a"
 	},
 	"uniIdRouter": {},
 	"tabBar": {
